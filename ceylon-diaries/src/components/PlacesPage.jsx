@@ -17,8 +17,6 @@ import {
 } from "@mui/material";
 
  const API_BASE_URL = "https://localhost:7135/api/Places"; 
-// if this doesn't work later, try: http://localhost:5046/api/places
-// use the exact backend URL shown when your .NET app runs
 
 function PlacesPage() {
   const [places, setPlaces] = useState([]);

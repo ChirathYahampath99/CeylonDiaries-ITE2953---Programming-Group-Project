@@ -13,8 +13,6 @@ import {
 } from "@mui/material";
 
 const API_BASE_URL = "https://localhost:7135/api/Places";
-// if needed, replace with your actual backend URL
-
 const emptyForm = {
   name: "",
   category: "",
