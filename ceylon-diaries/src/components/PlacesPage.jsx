@@ -12,16 +12,13 @@ import {
   Select,
   MenuItem,
   Button,
-  Chip,
-  Paper,
 } from "@mui/material";
 
- const API_BASE_URL = "https://localhost:7135/api/Places"; 
+const API_BASE_URL = "https://localhost:7135/api/Places";
 
-function PlacesPage() {
+function PlacesPage({ addToPlan }) {
   const [places, setPlaces] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
-  const [plan, setPlan] = useState([]);
 
   useEffect(() => {
     fetchPlaces();
@@ -46,17 +43,6 @@ function PlacesPage() {
     return places.filter((place) => place.category === selectedCategory);
   }, [places, selectedCategory]);
 
-  const addToPlan = (place) => {
-    const alreadyAdded = plan.some((item) => item.id === place.id);
-    if (!alreadyAdded) {
-      setPlan([...plan, place]);
-    }
-  };
-
-  const removeFromPlan = (id) => {
-    setPlan(plan.filter((item) => item.id !== id));
-  };
-
   return (
     <Box sx={{ p: 4 }}>
       <Typography variant="h4" gutterBottom>
@@ -79,85 +65,66 @@ function PlacesPage() {
         </Select>
       </FormControl>
 
-<Grid container spacing={3}>
-  {filteredPlaces.map((place) => (
-    <Grid item xs={12} key={place.id}>
-      <Card sx={{ display: "flex", mb: 2 }}>
-        
-        <CardMedia
-          component="img"
-          sx={{
-            width: 250,
-            height: 200,
-            objectFit: "cover"
-          }}
-          image={place.imageUrl || "/images/default.jpg"}
-          alt={place.name}
-        />
-
-        <CardContent sx={{ flex: 1 }}>
-          <Typography variant="h6">{place.name}</Typography>
-
-          <Typography variant="body2" color="text.secondary">
-            {place.category}
-          </Typography>
-
-          <Typography sx={{ mt: 1 }}>
-            {place.description}
-          </Typography>
-
-          <Typography sx={{ mt: 1 }}>
-            <strong>Opening Hours:</strong> {place.openingHours}
-          </Typography>
-
-          <Typography>
-            <strong>Distance:</strong> {place.distance}
-          </Typography>
-
-          <Box sx={{ mt: 2 }}>
-            <Button
-              variant="contained"
-              sx={{ mr: 1 }}
-              onClick={() => addToPlan(place)}
+      <Grid container spacing={3}>
+        {filteredPlaces.map((place) => (
+          <Grid item xs={12} key={place.id}>
+            <Card
+              sx={{
+                display: "flex",
+                flexDirection: { xs: "column", md: "row" },
+                mb: 2,
+              }}
             >
-              ADD TO PLAN
-            </Button>
-
-            <Button
-              variant="outlined"
-              href={place.locationUrl}
-              target="_blank"
-              rel="noreferrer"
-            >
-              VIEW MAP
-            </Button>
-          </Box>
-        </CardContent>
-      </Card>
-    </Grid>
-  ))}
-</Grid>
-
-      <Paper elevation={3} sx={{ mt: 5, p: 3 }}>
-        <Typography variant="h5" gutterBottom>
-          My One-Day Plan
-        </Typography>
-
-        {plan.length === 0 ? (
-          <Typography>No places selected yet.</Typography>
-        ) : (
-          <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
-            {plan.map((item) => (
-              <Chip
-                key={item.id}
-                label={item.name}
-                onDelete={() => removeFromPlan(item.id)}
-                color="primary"
+              <CardMedia
+                component="img"
+                sx={{
+                  width: { xs: "100%", md: 250 },
+                  height: 200,
+                  objectFit: "cover",
+                }}
+                image={place.imageUrl || "/images/default.jpg"}
+                alt={place.name}
               />
-            ))}
-          </Box>
-        )}
-      </Paper>
+
+              <CardContent sx={{ flex: 1 }}>
+                <Typography variant="h6">{place.name}</Typography>
+
+                <Typography variant="body2" color="text.secondary">
+                  {place.category}
+                </Typography>
+
+                <Typography sx={{ mt: 1 }}>{place.description}</Typography>
+
+                <Typography sx={{ mt: 1 }}>
+                  <strong>Opening Hours:</strong> {place.openingHours}
+                </Typography>
+
+                <Typography>
+                  <strong>Distance:</strong> {place.distance}
+                </Typography>
+
+                <Box sx={{ mt: 2, display: "flex", gap: 1 }}>
+                  <Button
+                    variant="contained"
+                    onClick={() => addToPlan(place)}
+                  >
+                    ADD TO PLAN
+                  </Button>
+
+                  <Button
+                    variant="outlined"
+                    href={place.locationUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    VIEW MAP
+                  </Button>
+                </Box>
+              </CardContent>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
     </Box>
   );
 }
