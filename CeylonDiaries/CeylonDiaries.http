@@ -1,0 +1,6 @@
+@CeylonDiaries_HostAddress = http://localhost:5035
+
+GET {{CeylonDiaries_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
